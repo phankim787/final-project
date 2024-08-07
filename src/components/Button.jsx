@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const StyledButton = styled.button`
     background-color: mediumpurple;
@@ -17,3 +18,9 @@ export default function Button({ onClick, children }) {
         </StyledButton>
     );
 }
+
+// to eliminate propType errors
+Button.propTypes = {
+    onClick: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
+};

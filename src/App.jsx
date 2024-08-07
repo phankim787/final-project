@@ -10,7 +10,7 @@ export default function App() {
     const handleCalculate = (input) => {
         // Basic validation for input
         if (/^\d+\s+\w+\s+of\s+\w+$/.test(input)) {
-            // Replace this with actual API call
+            // Mock calculation (you should replace this with actual API call)
             const calculatedCalories = Math.floor(Math.random() * 500);
             setCalories(calculatedCalories);
             setError('');
