@@ -1,13 +1,19 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const Button = styled.button`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: lightblue;
+const StyledButton = styled.button`
+    background-color: mediumpurple;
     color: white;
-    padding: 10px;
-`
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+`;
 
-
-export default Button;
+export default function Button({ onClick, children }) {
+    return (
+        <StyledButton onClick={onClick}>
+            {children}
+        </StyledButton>
+    );
+}
