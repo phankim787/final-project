@@ -1,26 +1,35 @@
 import styled from "styled-components";
-import Input from "../components/Input";
+import PropTypes from 'prop-types';
 
-
-const StyledOutputWrapper = styled.div`    
+const StyledOutputWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-`
+    margin-top: 20px;
+`;
 
 const OutputLabel = styled.h2`
     font-size: calc(10px + 2vmin);
-`
+`;
 
+const ErrorLabel = styled.h2`
+    font-size: calc(10px + 2vmin);
+    color: red;
+`;
 
-// 2 outputs..? Calorie Output or Error Output
-
-export default function Output({calories}){
-    return(
+export default function Output({ calories, error }) {
+    return (
         <StyledOutputWrapper>
-            <OutputLabel> Total Calories: ${calories} </OutputLabel>
+            {error ? (
+                <ErrorLabel>{error}</ErrorLabel>
+            ) : (
+                <OutputLabel>Total Calories: {calories}</OutputLabel>
+            )}
         </StyledOutputWrapper>
     )
-
 }
+
+Output.propTypes = {
+    calories: PropTypes.number,
+    error: PropTypes.string.isRequired,
+};

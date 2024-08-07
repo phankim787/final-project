@@ -19,5 +19,4 @@ export default function Header(){
             <Title> Nutrition Calculator </Title>
         </StyledHeader>
     )
-
 }

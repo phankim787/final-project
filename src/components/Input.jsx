@@ -1,35 +1,47 @@
 import styled from 'styled-components';
 import Button from './Button.jsx';
-import {useState, useEffect} from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 
-
+const StyledInputWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+`;
 
 const StyledInput = styled.input`
-    margin: 0;
-    font-family: Calibri;
-`
+    margin: 10px 0;
+    padding: 5px;
+    font-family: Calibri, serif;
+    font-size: 1rem;
+`;
 
-const CalcButton = styled(Button)`
-    background-color: mediumpurple;
-`
+export default function Input({ onCalculate }) {
+    const [input, setInput] = useState('');
 
-//grab data from api
-export default function Input() {
-    const [ingredients, setIngredients] = useState([]);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onCalculate(input);
+    };
 
-
-
-    return(
-        <>
-            <StyledInput> Please enter your ingredients: </StyledInput>
-            <form onSubmit={onSubmit}>
-
-
+    return (
+        <StyledInputWrapper>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    Please enter your ingredients:
+                    <StyledInput
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                    />
+                </label>
+                <Button type="submit">Calculate</Button>
             </form>
-
-
-            <CalcButton>Calculate</CalcButton>
-        </>
+        </StyledInputWrapper>
     )
-
 }
+
+Input.propTypes = {
+    onCalculate: PropTypes.func.isRequired,
+};
