@@ -1,13 +1,19 @@
+import Header from "./components/Header.jsx";
+import Input from "./components/Input.jsx";
+import Output from "./components/Output.jsx";
 
-import './App.css'
-
-function App() {
+export default function App() {
 
   return (
     <>
-
+      <Header/>
+      <Input/>
+      <Output/>
     </>
   )
 }
 
-export default App
+
+// if input is valid ==> then show Calorie output
+// if input is not (not formatted, numbers)==> Show Error output "Please try again!"
+// ex: 1 cup of ____
