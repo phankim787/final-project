@@ -2,14 +2,11 @@
  * App.jsx
  *
  * This is the root component of the Nutrition Calculator application.
- * It manages the state of the application, including calories, error messages, loading state, and button label.
- * It also handles the main logic for making API requests to fetch nutritional data.
+ * It primarily renders the main structure of the application, delegating logic to custom hooks and components.
  *
  * Responsibilities:
- * - Fetch data from the API based on user input.
- * - Manage global state (calories, error, loading, button label).
  * - Render the main components of the app (Header, Input, Output, Footer).
- * - Handle reset functionality to return to the initial state.
+ * - Use the `useNutritionCalculator` hook to manage application state and logic.
  *
  * Author: Pratham Shroff, pshroff@bu.edu
  */
@@ -18,9 +15,9 @@ import Header from "./components/Header.jsx";
 import Input from "./components/Input.jsx";
 import Output from "./components/Output.jsx";
 import Footer from "./components/Footer.jsx";
-import { useState } from "react";
+import Loading from "./components/Loading.jsx";
 import { createGlobalStyle } from 'styled-components';
-import { getNutritionData } from './api';
+import { useNutritionCalculator } from './useNutritionCalculator';
 
 // Global styles applied to the entire app
 const GlobalStyle = createGlobalStyle`
@@ -43,47 +40,15 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default function App() {
-    // State management for calories, error messages, loading indicator, and button label
-    const [calories, setCalories] = useState(null);
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [buttonLabel, setButtonLabel] = useState('Calculate');
-
-    // Function to handle the calculation process
-    const handleCalculate = async (input) => {
-        setLoading(true); // Show loading indicator while fetching data
-        try {
-            const data = await getNutritionData(input);
-
-            // Use optional chaining to safely access totalNutrients
-            if (data.calories === 0 || !data?.totalNutrients) {
-                setError('We cannot calculate the nutrition for some ingredients. Please check the ingredient spelling or if you have entered a quantity for the ingredients.');
-                setCalories(null);
-            } else {
-                // If valid data is returned, update the state
-                setCalories(data.calories);
-                setError('');
-            }
-            // Switch the button label to 'Reset' after displaying result
-            setButtonLabel('Reset');
-        } catch (err) {
-            // Handle any errors during the API request
-            setError('Error fetching data. Please try again!');
-            setCalories(null);
-            // Switch the button label to 'Reset' in case of an error
-            setButtonLabel('Reset');
-        } finally {
-            // Hide the loading indicator after the process is complete
-            setLoading(false);
-        }
-    };
-
-    // Function to reset the form to its initial state
-    const handleReset = () => {
-        setCalories(null);
-        setError('');
-        setButtonLabel('Calculate');
-    };
+    // Use the custom hook to manage state and logic
+    const {
+        calories,
+        error,
+        loading,
+        buttonLabel,
+        handleCalculate,
+        handleReset,
+    } = useNutritionCalculator();
 
     return (
         <>
@@ -93,7 +58,7 @@ export default function App() {
                 onCalculate={buttonLabel === 'Calculate' ? handleCalculate : handleReset}
                 buttonLabel={buttonLabel}
             />
-            {loading ? <p>Loading...</p> : <Output calories={calories} error={error} />}
+            {loading ? <Loading /> : <Output calories={calories} error={error} />}
             <Footer />
         </>
     );
