@@ -2,12 +2,11 @@
  * Input.jsx
  *
  * This component handles user input for the Nutrition Calculator.
- * It includes the input field where users enter their ingredient, and the "Calculate" button.
- * It also ensures that the form is styled appropriately and positioned correctly on the screen.
+ * It includes the input field where users enter their ingredient, and the dynamic button (Calculate or Reset).
  *
  * Responsibilities:
  * - Manage the state of user input.
- * - Trigger the calculation process when the form is submitted.
+ * - Trigger the calculation or reset process when the form is submitted.
  * - Ensure the input form is responsive and accessible.
  *
  * Author: Pratham Shroff, pshroff@bu.edu
@@ -50,13 +49,14 @@ const StyledInput = styled.input`
     }
 `;
 
-export default function Input({ onCalculate }) {
+export default function Input({ onCalculate, buttonLabel }) {
     const [input, setInput] = useState(''); // State for managing user input
 
-    // Handle form submission and trigger calculation
+    // Handle form submission and trigger calculation or reset
     const handleSubmit = (e) => {
         e.preventDefault();
         onCalculate(input);
+        if (buttonLabel === 'Reset') setInput(''); // Clear input on reset
     };
 
     return (
@@ -68,7 +68,7 @@ export default function Input({ onCalculate }) {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                 />
-                <Button type="submit">Calculate</Button>
+                <Button type="submit">{buttonLabel}</Button>
             </form>
         </StyledInputWrapper>
     );
@@ -76,4 +76,5 @@ export default function Input({ onCalculate }) {
 
 Input.propTypes = {
     onCalculate: PropTypes.func.isRequired,
+    buttonLabel: PropTypes.string.isRequired,
 };

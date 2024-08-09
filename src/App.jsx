@@ -2,13 +2,14 @@
  * App.jsx
  *
  * This is the root component of the Nutrition Calculator application.
- * It manages the state of the application, including calories, error messages, and loading state.
+ * It manages the state of the application, including calories, error messages, loading state, and button label.
  * It also handles the main logic for making API requests to fetch nutritional data.
  *
  * Responsibilities:
  * - Fetch data from the API based on user input.
- * - Manage global state (calories, error, loading).
+ * - Manage global state (calories, error, loading, button label).
  * - Render the main components of the app (Header, Input, Output, Footer).
+ * - Handle reset functionality to return to the initial state.
  *
  * Author: Pratham Shroff, pshroff@bu.edu
  */
@@ -42,10 +43,11 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default function App() {
-    // State management for calories, error messages, and loading indicator
+    // State management for calories, error messages, loading indicator, and button label
     const [calories, setCalories] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [buttonLabel, setButtonLabel] = useState('Calculate');
 
     // Function to handle the calculation process
     const handleCalculate = async (input) => {
@@ -62,21 +64,35 @@ export default function App() {
                 setCalories(data.calories);
                 setError('');
             }
+            // Switch the button label to 'Reset' after displaying result
+            setButtonLabel('Reset');
         } catch (err) {
             // Handle any errors during the API request
             setError('Error fetching data. Please try again!');
             setCalories(null);
+            // Switch the button label to 'Reset' in case of an error
+            setButtonLabel('Reset');
         } finally {
             // Hide the loading indicator after the process is complete
             setLoading(false);
         }
     };
 
+    // Function to reset the form to its initial state
+    const handleReset = () => {
+        setCalories(null);
+        setError('');
+        setButtonLabel('Calculate');
+    };
+
     return (
         <>
             <GlobalStyle />
             <Header />
-            <Input onCalculate={handleCalculate} />
+            <Input
+                onCalculate={buttonLabel === 'Calculate' ? handleCalculate : handleReset}
+                buttonLabel={buttonLabel}
+            />
             {loading ? <p>Loading...</p> : <Output calories={calories} error={error} />}
             <Footer />
         </>
