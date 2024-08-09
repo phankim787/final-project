@@ -53,8 +53,8 @@ export default function App() {
         try {
             const data = await getNutritionData(input);
 
-            // If the API returns zero calories or no nutrient data, show an error message
-            if (data.calories === 0 || !data.totalNutrients) {
+            // Use optional chaining to safely access totalNutrients
+            if (data.calories === 0 || !data?.totalNutrients) {
                 setError('We cannot calculate the nutrition for some ingredients. Please check the ingredient spelling or if you have entered a quantity for the ingredients.');
                 setCalories(null);
             } else {
